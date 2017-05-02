@@ -1,0 +1,44 @@
+ <!DOCTYPE html>
+ <html>
+ <head>
+ 	<title></title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+ 	<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+ </head>
+ <body>
+ <div id="bus-stats">
+ </div>
+ 
+
+ <script>
+ var start=moment("03:00", "HH:mm");
+ var nowTime=moment("19:12", "HH:mm");
+ 
+
+function timeCalc(){
+var tripLength=17;
+var trips=nowTime.diff(start, 'minutes');
+var tripsCompleted=trips/tripLength;
+var remainder=trips % tripLength;
+var timeToWait=tripLength-remainder;
+console.log(start);
+console.log(nowTime);
+console.log("Length "+tripLength);
+console.log("Duration Passed in Minutes: "+trips);
+console.log("Trips made so far today: " + tripsCompleted);
+console.log("Remainder "+ remainder);
+console.log("Time to next train "+ timeToWait);
+$("#bus-stats").append('<h3>'
++ 'Start Time: ' + moment(start).format("HH:mm") +
+'<br>Current Time: ' + moment(nowTime).format("HH:mm") +
+'<br>Length of Each Trip: ' + tripLength +
+'<br>Duration Passed in Minutes: ' + trips +
+'<br>Trips made so far today: '+ tripsCompleted +
+'<br>Remainder: '+ remainder +
+'<br>Time to next train: '+ timeToWait + '</h3>')
+}
+timeCalc();
+
+ </script>
+ </body>
+ </html>

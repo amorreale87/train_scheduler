@@ -1,11 +1,12 @@
     $(document).ready(function(){
-    var config = {
-    apiKey: "AIzaSyDqpGiL9b7bOJknO3SKGy90zRQVt07RAbU",
-    authDomain: "firstproject-ae275.firebaseapp.com",
-    databaseURL: "https://firstproject-ae275.firebaseio.com",
-    projectId: "firstproject-ae275",
-    storageBucket: "firstproject-ae275.appspot.com",
-    messagingSenderId: "1001301977102"
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAo2kvzr0B6JI8LAKPRgKoDFkt_qV1SL00",
+    authDomain: "practice-5657e.firebaseapp.com",
+    databaseURL: "https://practice-5657e.firebaseio.com",
+    projectId: "practice-5657e",
+    storageBucket: "practice-5657e.appspot.com",
+    messagingSenderId: "225545782434"
   };
   firebase.initializeApp(config);
 
@@ -22,21 +23,48 @@ console.log("App Initialized");
   var startDate="startDate";
   var montlyRate="Initial Comment";
 
-    $("#add-employee").on("click", function(event) {
+    $("#add-schedule").on("click", function(event) {
       event.preventDefault();
 
       // Grabbed values from text boxes
-      name = $("#name-input").val().trim();
-      role = $("#role-input").val().trim();
-      startDate = $("#startdate-input").val().trim();
-      monthlyRate = $("#monthlyrate-input").val().trim();
+      trainName= $("#add-train").val().trim();
+      destination = $("#add-destination").val().trim();
+      frequency = $("#frequency").val().trim();
+      arrival = $("#arrival").val().trim();
+
+
+      var start=moment(arrival, "HH:mm");
+      var nowTime=moment();
+ 
+      var tripLength=frequency;
+      var trips=nowTime.diff(start, 'minutes');
+      var tripsCompleted=trips/tripLength;
+      var remainder=trips % tripLength;
+      var minutesAway=tripLength-remainder;
+
+
+      var nextArrival = nowTime.add(minutesAway,'minutes').format("hh:mm a")
+      
+
+
+      console.log(trainName)
+      console.log(destination)
+      console.log(frequency)
+      console.log(arrival)
+      console.log(minutesAway)
+      console.log(nextArrival)
+
+
 
       // Code for handling the push
       database.ref().push({
-        name: name,
-        role: role,
-        startDate: startDate,
-        monthlyRate: monthlyRate
+        trainName: trainName,
+        destination: destination,
+        frequency: frequency,
+        nextArrival: nextArrival,
+        arrival: arrival,
+        minutesAway: minutesAway
+
       });
 
     });
@@ -44,29 +72,30 @@ console.log("App Initialized");
   database.ref().on("child_added", function(childSnapshot) {
 
       // Log everything that's coming out of snapshot
-     rtvName=(childSnapshot.val().name);
-     rtvRole=(childSnapshot.val().role);
-     rtvStartDate=(childSnapshot.val().startDate);
-     rtvMonthlyRate=(childSnapshot.val().monthlyRate);
+     rtvTrainName=(childSnapshot.val().trainName);
+     rtvDestination=(childSnapshot.val().destination);
+     rtvFrequency=(childSnapshot.val().frequency);
+     rtvNextArrival=(childSnapshot.val().nextArrival);
+     rtvMinutesAway = (childSnapshot.val().minutesAway);
 
-      console.log(childSnapshot.val().name);
-      console.log(childSnapshot.val().role);
-      console.log(childSnapshot.val().startDate);
-      console.log(childSnapshot.val().monthlyRate);
+      console.log(childSnapshot.val().trainName);
+      console.log(childSnapshot.val().destination);
+      console.log(childSnapshot.val().frequency);
+      console.log(childSnapshot.val().arrival);
 
-      console.log(rtvName);
-      console.log(rtvRole);
-      console.log(rtvStartDate);
-      console.log(rtvMonthlyRate);
+      console.log(rtvTrainName);
+      console.log(rtvDestination);
+      console.log(rtvFrequency);
+      console.log(rtvNextArrival);
       
-    var monthsWorked=moment(rtvStartDate).toNow();
-    console.log(monthsWorked);
-    var a=moment(rtvStartDate);
-    var b=moment();
-    var c=b.diff(a,'months');
-    var paidOut=rtvMonthlyRate*c;
-    // var d=moment().diff(moment(rtvStartDate), 'months', true)
-    console.log("Date Diff in months: "+ c);
+    // var monthsWorked=moment(rtvStartDate).toNow();
+    // console.log(monthsWorked);
+    // var a=moment(rtvStartDate);
+    // var b=moment();
+    // var c=b.diff(a,'months');
+    // var paidOut=rtvMonthlyRate*c;
+    // // var d=moment().diff(moment(rtvStartDate), 'months', true)
+    // console.log("Date Diff in months: "+ c);
 
     
 
@@ -77,12 +106,11 @@ console.log("App Initialized");
     // retrievedEEdata+="<td>"+ rtvMonthlyRate +"</td>";
     // retrievedEEdata+="<td>48000</td>";
     $("#emplData").append("<tr class='eeDataRow'>" +
-      "<td>"+rtvName+"</td>" +
-      "<td>"+rtvRole+"</td>" +
-      "<td>"+rtvStartDate+"</td>" +
-      "<td>"+c+"  </td>" + 
-      "<td>"+ rtvMonthlyRate +"</td>" + 
-      "<td>"+paidOut+"</td>" +
+      "<td>"+rtvTrainName+"</td>" +
+      "<td>"+rtvDestination+"</td>" +
+      "<td>"+rtvFrequency+"</td>" + 
+      "<td>"+ rtvNextArrival +"</td>" +
+      "<td>" + rtvMinutesAway + "</td>" +  
       "</tr>"
 
 
