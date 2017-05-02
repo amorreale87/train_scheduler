@@ -1,0 +1,12 @@
+#title {
+	background-color:dodgerblue;
+	text-align:center;
+}
+input {
+	width:100%;
+}
+#add-employee {
+	width:40%;
+	margin:5px;
+	top-margin:10px;
+}
